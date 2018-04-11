@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context="com.android.peter.servicedemo.MainActivity">
+
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"/>
+
+    <Button
+        android:id="@+id/btn_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"/>
+
+    <Button
+        android:id="@+id/btn_bind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bind"/>
+
+    <Button
+        android:id="@+id/btn_unbind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unbind"/>
+
+    <Button
+        android:id="@+id/btn_stop_self"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop self"/>
+    <Button
+        android:id="@+id/btn_show_toast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show toast"/>
+
+</LinearLayout>
