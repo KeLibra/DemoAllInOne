@@ -12,7 +12,7 @@ import android.util.Log;
  */
 
 public class DBOpenHelper extends SQLiteOpenHelper {
-    private final static String TAG = "DBOpenHelper";
+    private final static String TAG = "Demo." + "DBOpenHelper";
 
     private final static String DATABASE_NAME = "com_android_peter_provider.db";
     public final static String DATABASE_STUDENT_TABLE_NAME = "student";
@@ -55,6 +55,19 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate");
         db.execSQL(CREATE_STUDENT_TABLE);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        Log.d(TAG,"onOpen");
+        super.onOpen(db);
+//        db.execSQL("insert into student (id,name,gender,number,score) values (1,'lemon',1,201804111756,80)");
+//        db.execSQL("insert into student (id,name,gender,number,score) values (3,'peter',1,201804121515,10)");
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        super.onDowngrade(db, oldVersion, newVersion);
     }
 
     @Override

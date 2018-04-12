@@ -1,6 +1,7 @@
 package com.android.peter.contentproviderclient;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,13 +11,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 /**
  * Created by peter on 2018/4/8.
  */
 
 public class StudentContentProvider extends ContentProvider {
-    private final static String TAG = "StudentProvider";
+    private final static String TAG = "Demo." + "StudentProvider";
 
     private final static String AUTHORITY = "com.android.peter.provider";
     private final static int STUDENT_URI_CODE = 0;
@@ -57,6 +59,15 @@ public class StudentContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
+        int uriType = sUriMatcher.match(uri);
+
+        switch (uriType) {
+            case STUDENT_URI_CODE:
+                return ContentResolver.CURSOR_DIR_BASE_TYPE;
+            default:
+                //do nothing
+        }
+
         return null;
     }
 
@@ -74,7 +85,9 @@ public class StudentContentProvider extends ContentProvider {
                 throw new IllegalArgumentException("UnSupport Uri : " + uri);
         }
 
-        if(row > 0) {
+        Log.d(TAG,"insert row = " + row);
+        if(row > -1) {
+            Log.d(TAG,"insert notifyChange");
             mContext.getContentResolver().notifyChange(uri,null);
             return ContentUris.withAppendedId(uri, row);
         }
@@ -95,7 +108,9 @@ public class StudentContentProvider extends ContentProvider {
                 throw new IllegalArgumentException("UnSupport Uri : " + uri);
         }
 
+        Log.d(TAG,"delete row = " + rowDelete);
         if(rowDelete > 0) {
+            Log.d(TAG,"delete notifyChange");
             mContext.getContentResolver().notifyChange(uri,null);
         }
 
@@ -114,11 +129,12 @@ public class StudentContentProvider extends ContentProvider {
                 throw new IllegalArgumentException("UnSupport Uri : " + uri);
         }
 
+        Log.d(TAG,"update row = " + rowUpdate);
         if(rowUpdate > 0) {
+            Log.d(TAG,"update notifyChange");
             mContext.getContentResolver().notifyChange(uri,null);
         }
 
         return rowUpdate;
     }
-
 }
