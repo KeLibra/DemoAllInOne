@@ -29,12 +29,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        insertData();
-        queryData();
-        updateData();
-        queryData();
-        deleteData();
-        queryData();
+
+        switch (mDatabase.getVersion()) {
+            case 1:
+                mDatabase.beginTransaction();
+                try {
+                    insertData();
+                    queryData();
+                    updateData();
+                    queryData();
+                    deleteData();
+                    queryData();
+                    mDatabase.setTransactionSuccessful();
+                } catch(SQLException ex) {
+                    ex.printStackTrace();
+                } finally {
+                    mDatabase.endTransaction();
+                }
+                break;
+            case 2:
+                insertDataV2();
+                queryDataV2();
+                break;
+            default:
+                //do nothing
+        }
     }
 
     @Override
@@ -71,11 +90,21 @@ public class MainActivity extends AppCompatActivity {
         contentValues.put("score","90");
 
         mDatabase.insertWithOnConflict(DBHelper.TABLE_NAME,null,contentValues,SQLiteDatabase.CONFLICT_IGNORE);
+
+        contentValues = new ContentValues();
+        contentValues.put("id",3);
+        contentValues.put("name","lemon");
+        contentValues.put("gender",1);
+        contentValues.put("number","201804111048");
+        contentValues.put("score","90");
+
+        mDatabase.insertWithOnConflict(DBHelper.TABLE_NAME,null,contentValues,SQLiteDatabase.CONFLICT_IGNORE);
     }
 
     private void deleteData() {
         Log.i(TAG,"deleteData");
-        mDatabase.delete(DBHelper.TABLE_NAME,"name = ?",new String[]{"update"});
+        int number = mDatabase.delete(DBHelper.TABLE_NAME,"id = ?",new String[]{"3"});
+        Log.d(TAG,"deleteData num = " + number);
     }
 
     private void updateData() {
@@ -107,6 +136,42 @@ public class MainActivity extends AppCompatActivity {
             }
         } catch (SQLException e) {
             Log.e(TAG,"queryData exception", e);
+        }
+    }
+
+    private void insertDataV2() {
+        Log.i(TAG,"insertDataV2");
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBHelper.COLUMN_ID,2);
+        contentValues.put(DBHelper.COLUMN_NAME,"lucky");
+        contentValues.put(DBHelper.COLUMN_GENDER,1);
+        contentValues.put(DBHelper.COLUMN_NUMBER,"201805161054");
+        contentValues.put(DBHelper.COLUMN_SCORE,99);
+        contentValues.put(DBHelper.COLUMN_PHONE,"13813812345");
+
+        mDatabase.insertWithOnConflict(DBHelper.TABLE_NAME,null,contentValues,SQLiteDatabase.CONFLICT_IGNORE);
+    }
+
+    private void queryDataV2() {
+        Log.i(TAG,"queryDataV2");
+
+        Cursor cursor;
+        cursor = mDatabase.query(DBHelper.TABLE_NAME, null,"name = ?", new String[] {"lucky"},null,null,null);
+
+        try{
+            while (cursor != null && cursor.moveToNext()) {
+                Student student = new Student();
+                student.setId(cursor.getInt(cursor.getColumnIndex(DBHelper.COLUMN_ID)));
+                student.setName(cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_NAME)));
+                student.setGender(cursor.getInt(cursor.getColumnIndex(DBHelper.COLUMN_GENDER)));
+                student.setNumber(cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_NUMBER)));
+                student.setScore(cursor.getInt(cursor.getColumnIndex(DBHelper.COLUMN_SCORE)));
+                student.setPhone(cursor.getString(cursor.getColumnIndex(DBHelper.COLUMN_PHONE)));
+
+                Log.i(TAG,"queryDataV2 student = " + student.toString());
+            }
+        } catch (SQLException e) {
+            Log.e(TAG,"queryDataV2 exception", e);
         }
     }
 }

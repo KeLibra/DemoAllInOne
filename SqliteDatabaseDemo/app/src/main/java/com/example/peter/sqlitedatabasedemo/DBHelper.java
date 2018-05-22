@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by peter on 2018/5/15.
@@ -30,12 +31,22 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_GENDER = "gender";
     public static final String COLUMN_NUMBER = "number";
     public static final String COLUMN_SCORE = "score";
+    public static final String COLUMN_PHONE = "phone";
     public static final String[] TABLE_COLUMNS = {
             COLUMN_ID,
             COLUMN_NAME,
             COLUMN_GENDER,
             COLUMN_NUMBER,
             COLUMN_SCORE
+    };
+
+    public static final String[] TABLE_COLUMNS_v2 = {
+            COLUMN_ID,
+            COLUMN_NAME,
+            COLUMN_GENDER,
+            COLUMN_NUMBER,
+            COLUMN_SCORE,
+            COLUMN_PHONE
     };
 
     public DBHelper(Context context) {
@@ -52,6 +63,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
+        Log.i(TAG,"onCreate");
         String sql = "CREATE TABLE IF NOT EXISTS "
                 + TABLE_NAME + " ( "
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -60,11 +72,65 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COLUMN_NUMBER + " TEXT, "
                 + COLUMN_SCORE + " INTEGER)";
 
-        database.execSQL(sql);
+
+        //事务开始
+        database.beginTransaction();
+        try {
+            //执行操作语句
+            database.execSQL(sql);
+            //事务成功
+            database.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //事务结束
+            database.endTransaction();
+        }
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
+        Log.i(TAG,"onUpgrade oldVersion = " +  oldVersion + " , newVersion =" + newVersion);
 
+        switch (oldVersion) {
+            case 1:
+                upgradeFromVersion1(database);
+                break;
+            default:
+                Log.i(TAG,"Do not have this case !");
+        }
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase database, int oldVersion, int newVersion) {
+        //重写onDowngrade的时候不要调用父类onDowngrade方法
+        //super.onDowngrade(database, oldVersion, newVersion);
+        Log.i(TAG,"onDowngrade oldVersion = " +  oldVersion + " , newVersion =" + newVersion);
+        switch (oldVersion) {
+            case 2:
+                downgradeFromVersion2(database);
+                break;
+            default:
+                Log.i(TAG,"Do not have this case !");
+        }
+    }
+
+    private void upgradeFromVersion1(SQLiteDatabase database) {
+        Log.i(TAG,"upgradeFromVersion1");
+        //do something
+        database.execSQL("alter table " + TABLE_NAME + " add column phone text;");
+    }
+
+    private void downgradeFromVersion2(SQLiteDatabase database) {
+        Log.i(TAG,"downgradeFromVersion2");
+        //do something
+        database.execSQL("drop table if exists " + TABLE_NAME);
+        database.execSQL("CREATE TABLE IF NOT EXISTS "
+                + TABLE_NAME + " ( "
+                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_NAME + " TEXT,"
+                + COLUMN_GENDER + " INTEGER, "
+                + COLUMN_NUMBER + " TEXT, "
+                + COLUMN_SCORE + " INTEGER)");
     }
 }

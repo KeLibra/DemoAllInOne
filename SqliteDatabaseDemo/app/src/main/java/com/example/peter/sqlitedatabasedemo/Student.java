@@ -11,6 +11,7 @@ package com.example.peter.sqlitedatabasedemo;
  * @gender student's gender. e.g: 0 male; 1 female.
  * @number student's number. e.g: 201804081702.
  * @score student's score. more than 0 and less than 100. e.g:90.
+ * @phone student's phone number. e.g:13813812345
  * */
 
 public class Student {
@@ -21,6 +22,7 @@ public class Student {
     public Integer gender;
     public String number;
     public Integer score;
+    public String phone;
 
     @Override
     public String toString() {
@@ -30,7 +32,16 @@ public class Student {
                 ", gender=" + gender +
                 ", number='" + number + '\'' +
                 ", score=" + score +
+                ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Integer getId() {
