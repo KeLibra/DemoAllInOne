@@ -1,6 +1,7 @@
 package com.example.peter.permissiondemo;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -15,12 +16,20 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.tbruyelle.rxpermissions2.Permission;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import io.reactivex.functions.Consumer;
 
 public class PermissionDemoActivity extends AppCompatActivity {
 
     private static final String TAG = "PermissionDemo";
 
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 110;
+
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +46,8 @@ public class PermissionDemoActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        mContext = this;
 
         requestPermission();
     }
@@ -130,9 +141,36 @@ public class PermissionDemoActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            initRxPermissions();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initRxPermissions() {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.requestEach( Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_PHONE_STATE)
+                .subscribe(new Consumer<Permission>() {
+                    @Override
+                    public void accept(Permission permission) throws Exception {
+                        if (permission.granted) {
+                            Log.d(TAG,"initRxPermissions granted");
+                            // 用户已经同意该权限
+
+                        } else if (permission.shouldShowRequestPermissionRationale) {
+                            Log.d(TAG,"initRxPermissions shouldShowRequestPermissionRationale");
+                            // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
+                            Toast.makeText(mContext,getString(R.string.activity_main_setup_permission), Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Log.d(TAG,"initRxPermissions");
+                            // 用户拒绝了该权限，并且选中『不再询问』，提醒用户手动打开权限
+                            Toast.makeText(mContext,getString(R.string.activity_main_setup_permission), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }
