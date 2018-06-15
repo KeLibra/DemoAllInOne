@@ -9,5 +9,6 @@ HandlerDemo handler相关用法
 SqliteDatabaseDemo SqliteDatabase使用相关demo
 WifiAndBluetoothDetection 附近蓝牙和wifi搜索
 PermissionDemo Android 6.0动态权限申请demo
+FileDemo 添加与文件操作有关的demo
 
 其他demo陆续更新中。。。
