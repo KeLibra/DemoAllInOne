@@ -319,7 +319,7 @@ public class FileUtils {
     }
 
     /** buffer size in bytes */
-    final static int BUFFER_SIZE = 1024*8;
+    private final static int BUFFER_SIZE = 1024*8;
 
     /**
      * copy file using FileInputStream & FileOutputStream

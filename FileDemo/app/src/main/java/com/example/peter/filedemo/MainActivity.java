@@ -1,7 +1,7 @@
 package com.example.peter.filedemo;
 
+import android.app.ActivityManager;
 import android.content.Context;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,22 +39,31 @@ public class MainActivity extends AppCompatActivity {
         String data;
 
         //test for FileInputStream and FileOutputStream
-//        writeByteData();
-//        data = readByteData();
-//        mContent.setText(data);
-//        copyFile();
+        writeByteData();
+        data = readByteData();
+        mContent.setText(data);
+        copyFile();
 
         //test for BufferedInputStream and BufferedOutputStream
-        writeByteDataWithBuffer();
-        readByteDataWithBuffer();
-        copyWithBufferedStream();
+//        writeByteDataWithBuffer();
+//        readByteDataWithBuffer();
+//        copyWithBufferedStream();
 
         //test for BufferedReader and BufferedWriter
 //        writeCharacterData();
 //        data = readCharacterData();
 //        mContent.setText(data);
 
-        Log.d(TAG, "cost time = " + (System.currentTimeMillis() - beginTime) + "");
+        if(Log.isLoggable(TAG,Log.DEBUG)) {
+            Log.d(TAG, "cost time = " + (System.currentTimeMillis() - beginTime) + "");
+        }
+
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        if(activityManager != null) {
+            if(Log.isLoggable(TAG,Log.DEBUG)) {
+                Log.d(TAG, "Memory size = " + activityManager.getMemoryClass() + " Large memory size = " + activityManager.getLargeMemoryClass());
+            }
+        }
     }
 
     @Override
@@ -65,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d(TAG,"onStop");
     }
 
     @Override
@@ -133,5 +143,13 @@ public class MainActivity extends AppCompatActivity {
         final String FILE_NAME = PATH_DATA_DATA_FILES + "/" + "character_stream.txt";
 
         return FileUtils.readCharacterData(FILE_NAME);
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if(Log.isLoggable(TAG,Log.DEBUG)) {
+            Log.d(TAG,"level = " + level);
+        }
     }
 }
