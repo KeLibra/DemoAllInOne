@@ -224,7 +224,7 @@ public class FileUtils {
      * @param content The input content
      *
      * */
-    public static void writeCharacterData(String fileName, String content) {
+    public static void writeCharacterDataWithBuffer(String fileName, String content) {
         BufferedWriter bw = null;
         try {
             File file = new File(fileName);
@@ -255,7 +255,7 @@ public class FileUtils {
      * @param fileName The name of the file to open; can not contain path separators.
      *
      * */
-    public static String readCharacterData(String fileName) {
+    public static String readCharacterDataWithBuffer(String fileName) {
         BufferedReader br = null;
         StringBuffer sb = new StringBuffer();
 
