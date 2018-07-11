@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mContext = this;
 
         mNM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannels.createAllNotificationChannels(mContext);
 
         mSimple = findViewById(R.id.btn_simple);
         mAction = findViewById(R.id.btn_action);
