@@ -25,6 +25,8 @@ import static com.android.peter.notificationdemo.Notificaitons.*;
 public class NotificationService extends Service {
     private final static String TAG = "NotificationService";
 
+    public final static String ACTION_SEND_PROGRESS_NOTIFICATION = "com.android.peter.notificationdemo.ACTION_SEND_PROGRESS_NOTIFICATION";
+
     private Context mContext;
     private NotificationManager mNM;
     private boolean mIsLoved;
@@ -44,10 +46,8 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         if(intent != null && intent.getAction() != null) {
             Log.i(TAG,"onStartCommand action = " + intent.getAction());
-
             switch (intent.getAction()) {
                 case ACTION_SIMPLE:
                     break;
@@ -62,26 +62,7 @@ public class NotificationService extends Service {
                 case ACTION_INBOX_STYLE:
                     break;
                 case ACTION_MEDIA_STYLE:
-                    String option = intent.getStringExtra(EXTRA_OPTIONS);
-                    Log.i(TAG,"media option = " + option);
-                    if(option == null) {
-                        break;
-                    }
-                    switch (option) {
-                        case MEDIA_STYLE_ACTION_PAUSE:
-                            Notificaitons.getInstance().sendMediaStyleNotification(this,mNM,false);
-                            break;
-                        case MEDIA_STYLE_ACTION_PLAY:
-                            Notificaitons.getInstance().sendMediaStyleNotification(this,mNM,true);
-                            break;
-                        case MEDIA_STYLE_ACTION_NEXT:
-                            break;
-                        case MEDIA_STYLE_ACTION_DELETE:
-                            mNM.cancel(NOTIFICATION_MEDIA_STYLE);
-                            break;
-                        default:
-                            //do nothing
-                    }
+                    dealWithActionMediaStyle(intent);
                     break;
                 case ACTION_MESSAGING_STYLE:
                     break;
@@ -94,30 +75,15 @@ public class NotificationService extends Service {
                 case ACTION_DELETE:
                     break;
                 case ACTION_REPLY:
-                    Bundle result = RemoteInput.getResultsFromIntent(intent);
-                    if(result != null) {
-                        String content = result.getString(REMOTE_INPUT_RESULT_KEY);
-                        Log.i(TAG,"content = " + content);
-
-                        mNM.cancel(NOTIFICATION_REMOTE_INPUT);
-                    }
+                    dealWithActionReplay(intent);
+                    break;
+                case ACTION_PROGRESS:
+                    break;
+                case ACTION_SEND_PROGRESS_NOTIFICATION:
+                    dealWithActionSendProgressNotification();
                     break;
                 case ACTION_CUSTOM_HEADS_UP_VIEW:
-                    String headsUpOption = intent.getStringExtra(EXTRA_OPTIONS);
-                    Log.i(TAG,"heads up option = " + headsUpOption);
-                    if(headsUpOption == null) {
-                        break;
-                    }
-                    switch (headsUpOption) {
-                        case ACTION_ANSWER:
-                            mNM.cancel(NOTIFICATION_CUSTOM_HEADS_UP);
-                            break;
-                        case ACTION_REJECT:
-                            mNM.cancel(NOTIFICATION_CUSTOM_HEADS_UP);
-                            break;
-                        default:
-                            //do nothing
-                    }
+                    dealWithActionCustomHeadsUpView(intent);
                     break;
                 case ACTION_CUSTOM_VIEW:
                     break;
@@ -146,7 +112,6 @@ public class NotificationService extends Service {
                     //do nothing
             }
         }
-
         return START_STICKY;
     }
 
@@ -161,6 +126,72 @@ public class NotificationService extends Service {
         mContent.add(new NotificationContentWrapper(BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.custom_view_picture_pre),"远走高飞","金志文"));
         mContent.add(new NotificationContentWrapper(BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.custom_view_picture_current),"最美的期待","周笔畅 - 最美的期待"));
         mContent.add(new NotificationContentWrapper(BitmapFactory.decodeResource(mContext.getResources(),R.mipmap.custom_view_picture_next),"你打不过我吧","跟风超人"));
+    }
+
+    private void dealWithActionMediaStyle(Intent intent) {
+        String option = intent.getStringExtra(EXTRA_OPTIONS);
+        Log.i(TAG,"media option = " + option);
+        if(option == null) {
+            return;
+        }
+        switch (option) {
+            case MEDIA_STYLE_ACTION_PAUSE:
+                Notificaitons.getInstance().sendMediaStyleNotification(this,mNM,false);
+                break;
+            case MEDIA_STYLE_ACTION_PLAY:
+                Notificaitons.getInstance().sendMediaStyleNotification(this,mNM,true);
+                break;
+            case MEDIA_STYLE_ACTION_NEXT:
+                break;
+            case MEDIA_STYLE_ACTION_DELETE:
+                mNM.cancel(NOTIFICATION_MEDIA_STYLE);
+                break;
+            default:
+                //do nothing
+        }
+    }
+
+    private void dealWithActionReplay(Intent intent) {
+        Bundle result = RemoteInput.getResultsFromIntent(intent);
+        if(result != null) {
+            String content = result.getString(REMOTE_INPUT_RESULT_KEY);
+            Log.i(TAG,"content = " + content);
+            mNM.cancel(NOTIFICATION_REMOTE_INPUT);
+        }
+    }
+
+    private void dealWithActionSendProgressNotification() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0 ; i<=100 ; i++) {
+                    Notificaitons.getInstance().sendProgressViewNotification(mContext,mNM,i);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    private void dealWithActionCustomHeadsUpView(Intent intent) {
+        String headsUpOption = intent.getStringExtra(EXTRA_OPTIONS);
+        Log.i(TAG,"heads up option = " + headsUpOption);
+        if(headsUpOption == null) {
+            return;
+        }
+        switch (headsUpOption) {
+            case ACTION_ANSWER:
+                mNM.cancel(NOTIFICATION_CUSTOM_HEADS_UP);
+                break;
+            case ACTION_REJECT:
+                mNM.cancel(NOTIFICATION_CUSTOM_HEADS_UP);
+                break;
+            default:
+                //do nothing
+        }
     }
 
     private NotificationContentWrapper getNotificationContent() {

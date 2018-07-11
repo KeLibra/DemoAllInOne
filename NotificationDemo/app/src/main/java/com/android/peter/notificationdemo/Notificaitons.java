@@ -25,8 +25,9 @@ public class Notificaitons {
     public final static int NOTIFICATION_INBOX_STYLE = 5;
     public final static int NOTIFICATION_MEDIA_STYLE = 6;
     public final static int NOTIFICATION_MESSAGING_STYLE = 7;
-    public final static int NOTIFICATION_CUSTOM_HEADS_UP = 8;
-    public final static int NOTIFICATION_CUSTOM = 9;
+    public final static int NOTIFICATION_PROGRESS = 8;
+    public final static int NOTIFICATION_CUSTOM_HEADS_UP = 9;
+    public final static int NOTIFICATION_CUSTOM = 10;
 
     public final static String ACTION_SIMPLE = "com.android.peter.notificationdemo.ACTION_SIMPLE";
     public final static String ACTION_ACTION = "com.android.peter.notificationdemo.ACTION_ACTION";
@@ -36,6 +37,7 @@ public class Notificaitons {
     public final static String ACTION_INBOX_STYLE = "com.android.peter.notificationdemo.ACTION_INBOX_STYLE";
     public final static String ACTION_MEDIA_STYLE = "com.android.peter.notificationdemo.ACTION_MEDIA_STYLE";
     public final static String ACTION_MESSAGING_STYLE = "com.android.peter.notificationdemo.ACTION_MESSAGING_STYLE";
+    public final static String ACTION_PROGRESS = "com.android.peter.notificationdemo.ACTION_PROGRESS";
     public final static String ACTION_CUSTOM_HEADS_UP_VIEW = "com.android.peter.notificationdemo.ACTION_CUSTOM_HEADS_UP_VIEW";
     public final static String ACTION_CUSTOM_VIEW = "com.android.peter.notificationdemo.ACTION_CUSTOM_VIEW";
     public final static String ACTION_CUSTOM_VIEW_OPTIONS_LOVE = "com.android.peter.notificationdemo.ACTION_CUSTOM_VIEW_OPTIONS_LOVE";
@@ -342,6 +344,7 @@ public class Notificaitons {
                 .setActions(playOrPauseAction,nextAction,deleteAction)
                 //设置信箱样式通知
                 .setStyle(mediaStyle);
+
         //发送通知
         nm.notify(NOTIFICATION_MEDIA_STYLE,nb.build());
     }
@@ -373,6 +376,30 @@ public class Notificaitons {
                 .setStyle(messagingStyle);
         //发送通知
         nm.notify(NOTIFICATION_MESSAGING_STYLE,nb.build());
+    }
+
+    public void sendProgressViewNotification(Context context,NotificationManager nm, int progress) {
+        //创建点击通知时发送的广播
+        Intent intent = new Intent(context,NotificationService.class);
+        intent.setAction(ACTION_PROGRESS);
+        PendingIntent pi = PendingIntent.getService(context,0,intent,0);
+        //创建通知
+        Notification.Builder nb = new Notification.Builder(context,NotificationChannels.LOW)
+                //设置通知左侧的小图标
+                .setSmallIcon(R.mipmap.ic_notification)
+                //设置通知标题
+                .setContentTitle("Downloading...")
+                //设置通知内容
+                .setContentText(String.valueOf(progress) + "%")
+                //设置通知不可删除
+                .setOngoing(true)
+                //设置显示通知时间
+                .setShowWhen(true)
+                //设置点击通知时的响应事件
+                .setContentIntent(pi)
+                .setProgress(100,progress,false);
+        //发送通知
+        nm.notify(NOTIFICATION_PROGRESS,nb.build());
     }
 
     public void sendCustomHeadsUpViewNotification(Context context, NotificationManager nm) {
