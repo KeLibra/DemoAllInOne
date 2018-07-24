@@ -102,8 +102,19 @@ public class LocalService extends Service {
      * IPC.
      */
     public class LocalBinder extends Binder {
-        LocalService getService() {
+        private static final String TAG = "Binder";
+
+        public LocalService getService() {
             return LocalService.this;
+        }
+
+        public void startDownload() {
+            Log.d(TAG, "startDownload() executed");
+        }
+
+        public int add(int a, int b) {
+            Log.d(TAG, "add() executed");
+            return a + b;
         }
     }
 }

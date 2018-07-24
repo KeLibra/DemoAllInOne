@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     // To invoke the bound service, first make sure that this value
     // is not null.
     private LocalService mBoundService;
+    private LocalService.LocalBinder mBinder;
 
     //flag for service bind state
     private boolean mIsBind;
@@ -36,13 +37,15 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             Log.i(TAG, "onServiceConnected ~ componentName = " + componentName + " ,iBinder = " + iBinder);
             mIsBind = true;
-//            mBoundService = ((LocalService.LocalBinder)iBinder).getService();
+            mBinder = (LocalService.LocalBinder) iBinder;
+            mBoundService = mBinder.getService();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             Log.i(TAG, "onServiceDisconnected ~ componentName = " + componentName);
             mIsBind = false;
+            mBinder = null;
             mBoundService = null;
         }
     };
@@ -108,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(mBoundService != null) {
                     mBoundService.showToast("peter");
+                }
+                if(mBinder != null) {
+                    mBinder.add(2,3);
+                    mBinder.startDownload();
+
                 }
             }
         });
