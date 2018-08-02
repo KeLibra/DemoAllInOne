@@ -11,5 +11,7 @@ WifiAndBluetoothDetection 附近蓝牙和wifi搜索
 PermissionDemo Android 6.0动态权限申请demo
 FileDemo 添加与文件操作有关的demo
 NotificationDemo 添加包含各种通知写法的demo
+MessengerDemo 添加MessengerDemo示例
+AIDLClientDemo AIDLServiceDemo 添加AIDL demo示例，IPC通讯
 
 其他demo陆续更新中。。。
