@@ -1,4 +1,4 @@
-package com.android.peter.aidlservicedemo.Database;
+package com.android.peter.aidlservicedemo.database;
 
 import android.content.Context;
 import android.database.DatabaseErrorHandler;
@@ -29,7 +29,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        StudentListControllerImpl.getInstance(mContext).createTable(db);
+        db.beginTransaction();
+        try {
+            StudentTable.createTable(db);
+            db.setTransactionSuccessful();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
     }
 
     @Override

@@ -4,15 +4,17 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
+import com.android.peter.aidlservicedemo.database.StudentListDaoImpl;
 import com.android.peter.aidlservicedemo.bean.Student;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StudentManagerService extends Service {
@@ -21,34 +23,38 @@ public class StudentManagerService extends Service {
 
     private Context mContext;
     private NotificationManager mNM;
-    private List<Student> mStudentList = new ArrayList<>();
     private IBinder mService = new IStudentManager.Stub() {
         @Override
         public List<Student> getStudentList() throws RemoteException {
-
-            return mStudentList;
+            Log.d(TAG,"getStudentList");
+            return StudentListDaoImpl.getInstance(mContext).getAllStudent();
         }
 
         @Override
-        public void addStudent(Student student) throws RemoteException {
-            mStudentList.add(student);
+        public long addStudent(ContentValues contentValues) throws RemoteException {
+            Log.d(TAG,"addStudent contentValues = " + contentValues);
+            return StudentListDaoImpl.getInstance(mContext).insert(contentValues);
         }
 
         @Override
-        public void deletedStudent(Student student) throws RemoteException {
-            if(mStudentList.contains(student)) {
-                mStudentList.remove(student);
-            }
+        public int deletedStudent(String whereClause, String[] whereArgs) throws RemoteException {
+            Log.d(TAG,"deletedStudent whereClause = " + whereClause + " , whereArgs = " + whereArgs);
+            return StudentListDaoImpl.getInstance(mContext).delete(whereClause,whereArgs);
         }
 
         @Override
-        public void updateStudent(Student student) throws RemoteException {
-
+        public int updateStudent(ContentValues contentValues, String whereClause, String[] whereArgs) throws RemoteException {
+            Log.d(TAG,"deletedStudent contentValues = " + contentValues + " , whereClause = " + whereClause + " , whereArgs = " + whereArgs);
+            return StudentListDaoImpl.getInstance(mContext).update(contentValues,whereClause,whereArgs);
         }
 
         @Override
-        public Student queryStudent(String name) throws RemoteException {
-            return null;
+        public List<Student> queryStudent(String[] columns, String selection,
+                                   String[] selectionArgs, String groupBy, String having,
+                                   String orderBy, String limit) throws RemoteException {
+            Log.d(TAG,"queryStudent columns = " + columns + " , selection = " + selection + " , selectionArgs = " + selectionArgs + " , groupBy = " + groupBy
+                + " , having = " + having + " , orderBy = " + orderBy + " , limit = " + limit);
+            return StudentListDaoImpl.getInstance(mContext).query(columns,selection,selectionArgs,groupBy,having,orderBy,limit);
         }
     };
 
