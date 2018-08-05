@@ -1,6 +1,7 @@
 // IStudentManager.aidl
 package com.android.peter.aidlservicedemo;
 import com.android.peter.aidlservicedemo.bean.Student;
+import com.android.peter.aidlservicedemo.IOnDataChangeListener;
 
 interface IStudentManager {
     /**
@@ -12,4 +13,6 @@ interface IStudentManager {
     int updateStudent(in ContentValues contentValues, String whereClause, in String[] whereArgs);
     List<Student> queryStudent(in String[] columns, String selection,in String[] selectionArgs,
         String groupBy, String having,String orderBy, String limit);
+    void registerDataChangeListener(IOnDataChangeListener listener);
+    void unregisterDataChangeListener(IOnDataChangeListener listener);
 }

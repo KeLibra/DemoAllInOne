@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.peter.aidlservicedemo">
 
+    <permission android:name="com.android.peter.aidlservicedemo.PERMISSION_STUDENT_MANAGER_SERVICE"
+        android:protectionLevel="normal"
+        />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,6 +22,7 @@
 
         <service
             android:name=".StudentManagerService"
+            android:permission="com.android.peter.aidlservicedemo.PERMISSION_STUDENT_MANAGER_SERVICE"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
