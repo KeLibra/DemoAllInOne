@@ -1,5 +1,6 @@
 package com.android.peter.aidlservicedemo.database;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,21 +11,31 @@ public class DBHelper extends SQLiteOpenHelper {
     private final static String DB_NAME = "Student.db";
     private final static int DB_VERSION = 1;
 
-    private Context mContext;
+    @SuppressLint("StaticFieldLeak")
+    private static volatile DBHelper sDBHelper;
 
-    public DBHelper(Context context) {
+    private DBHelper(Context context) {
         this(context,DB_NAME,null,DB_VERSION);
-        mContext = context;
     }
 
-    public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DB_NAME, factory, DB_VERSION);
-        mContext = context;
     }
 
-    public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
+    private DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
         super(context, DB_NAME, factory, DB_VERSION, errorHandler);
-        mContext = context;
+    }
+
+    public static DBHelper getInstance(Context context) {
+        if(sDBHelper == null) {
+            synchronized (DBHelper.class) {
+                if(sDBHelper == null) {
+                    sDBHelper = new DBHelper(context.getApplicationContext());
+                }
+            }
+        }
+
+        return sDBHelper;
     }
 
     @Override

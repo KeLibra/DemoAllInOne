@@ -22,7 +22,7 @@ import com.android.peter.aidlservicedemo.database.StudentTable;
 import java.util.List;
 
 public class ClientActivity extends AppCompatActivity {
-    private final static String TAG = "peter.ClientActivity";
+    private final static String TAG = "peter.log.ClientActivity";
 
     private final static String REMOTE_SERVICE_PACKAGE_NAME = "com.android.peter.aidlservicedemo";
     private final static String REMOTE_SERVICE_CLASS_NAME = "com.android.peter.aidlservicedemo.StudentManagerService";

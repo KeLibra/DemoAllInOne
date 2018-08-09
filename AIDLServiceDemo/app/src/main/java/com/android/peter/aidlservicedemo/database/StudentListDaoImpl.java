@@ -25,7 +25,7 @@ public class StudentListDaoImpl implements StudentListDao {
 
     private StudentListDaoImpl(Context applicationContext) {
         mContext = applicationContext;
-        mDatabase = new DBHelper(mContext).getWritableDatabase();
+        mDatabase = DBHelper.getInstance(applicationContext).getWritableDatabase();
     }
 
     public static StudentListDaoImpl getInstance(Context context) {

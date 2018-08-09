@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Binder;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteCallbackList;
@@ -22,7 +21,7 @@ import com.android.peter.aidlservicedemo.bean.Student;
 import java.util.List;
 
 public class StudentManagerService extends Service {
-    private final static String TAG = "peter.StudentManagerService";
+    private final static String TAG = "peter.log.StudentManagerService";
     private final static int FOREGROUND_SERVICE_NOTIFICATION_ID = 20180731;
     private final static String PERMISSION_STUDENT_MANAGER_SERVICE = "com.android.peter.aidlservicedemo.PERMISSION_STUDENT_MANAGER_SERVICE";
 
@@ -32,12 +31,12 @@ public class StudentManagerService extends Service {
     private IBinder mService = new IStudentManager.Stub() {
         @Override
         public boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
+            Log.i(TAG,"onTransact code = " + code + " , data = " + data + " , reply = " + reply + " , flag = " + flags);
             int checkPermission = checkCallingOrSelfPermission(PERMISSION_STUDENT_MANAGER_SERVICE);
             if( checkPermission != PackageManager.PERMISSION_GRANTED) {
                 Log.i(TAG,"Do not have permission !");
                 return false;
             }
-
             String packageName = null;
             String[] packages = getPackageManager().getPackagesForUid(getCallingUid());
             if(packages != null && packages.length > 0) {
