@@ -1,5 +1,6 @@
 package com.android.peter.contentproviderclient;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -31,6 +32,7 @@ public class ClientActivity extends AppCompatActivity {
     private Handler mHandler;
     private ContentObserver mContentObserver;
 
+    @SuppressLint("HandlerLeak")
     private class ObserverHandler extends Handler {
 
         @Override
@@ -118,14 +120,22 @@ public class ClientActivity extends AppCompatActivity {
 
     private void queryValue() {
         Cursor cursor = getContentResolver().query(STUDENT_URI, new String[]{"id", "name","gender","number","score"},null,null,null);
-        while (cursor.moveToNext()) {
-            Student student = new Student();
-            student.id = cursor.getInt(cursor.getColumnIndex("id"));
-            student.name = cursor.getString(cursor.getColumnIndex("name"));
-            student.gender = cursor.getInt(cursor.getColumnIndex("gender"));
-            student.number = cursor.getString(cursor.getColumnIndex("number"));
-            student.score = cursor.getInt(cursor.getColumnIndex("score"));
-            Log.d(TAG,"student = " + student.toString());
+        try {
+            while (cursor != null && cursor.moveToNext()) {
+                Student student = new Student();
+                student.id = cursor.getInt(cursor.getColumnIndex("id"));
+                student.name = cursor.getString(cursor.getColumnIndex("name"));
+                student.gender = cursor.getInt(cursor.getColumnIndex("gender"));
+                student.number = cursor.getString(cursor.getColumnIndex("number"));
+                student.score = cursor.getInt(cursor.getColumnIndex("score"));
+                Log.d(TAG,"student = " + student.toString());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if(cursor != null) {
+                cursor.close();
+            }
         }
     }
 
