@@ -21,8 +21,9 @@ public class MainActivity extends AppCompatActivity {
         mReboot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 由于权限限制，并未生效
                 ReflectClass.shutDown();
-//                ReflectClass.shutdownOrReboot(true,true);
+                ReflectClass.shutdownOrReboot(true,true);
             }
         });
     }
@@ -30,6 +31,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        try {
+            // 创建对象
+            ReflectClass.reflectNewInstance();
+
+            // 反射私有的构造方法
+            ReflectClass.reflectPrivateConstructor();
+
+            // 反射私有属性
+            ReflectClass.reflectPrivateField();
+
+            // 反射私有方法
+            ReflectClass.reflectPrivateMethod();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         Log.d(TAG," zenmode = " + ReflectClass.getZenMode());
     }
 
