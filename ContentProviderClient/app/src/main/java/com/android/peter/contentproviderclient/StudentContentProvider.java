@@ -24,7 +24,7 @@ public class StudentContentProvider extends ContentProvider {
     private final static int STUDENT_URI_CODE = 0;
 
     private Context mContext;
-    private SQLiteDatabase mDataBase;
+    private static SQLiteDatabase mDataBase;
     private final static UriMatcher sUriMatcher;
 
     static {
@@ -136,5 +136,9 @@ public class StudentContentProvider extends ContentProvider {
         }
 
         return rowUpdate;
+    }
+
+    public static SQLiteDatabase getConnectionDB() {
+        return mDataBase;
     }
 }

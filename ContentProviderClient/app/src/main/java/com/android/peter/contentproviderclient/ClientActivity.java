@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import static com.android.peter.contentproviderclient.DBOpenHelper.DATABASE_STUDENT_TABLE_NAME;
+
 public class ClientActivity extends AppCompatActivity {
     private final static String TAG = "Demo." + "ClientActivity";
 
@@ -30,6 +32,7 @@ public class ClientActivity extends AppCompatActivity {
 
     private Context mContext;
     private Handler mHandler;
+    private StudentContentProvider mStudentContentProvider = new StudentContentProvider();
     private ContentObserver mContentObserver;
 
     @SuppressLint("HandlerLeak")
@@ -136,6 +139,34 @@ public class ClientActivity extends AppCompatActivity {
             if(cursor != null) {
                 cursor.close();
             }
+        }
+    }
+
+    private void queryFromProvider() {
+        Cursor cursor = mStudentContentProvider.query(STUDENT_URI, new String[]{"id", "name","gender","number","score"},null,null,null);
+        try {
+            while (cursor != null && cursor.moveToNext()) {
+                Student student = new Student();
+                student.id = cursor.getInt(cursor.getColumnIndex("id"));
+                student.name = cursor.getString(cursor.getColumnIndex("name"));
+                student.gender = cursor.getInt(cursor.getColumnIndex("gender"));
+                student.number = cursor.getString(cursor.getColumnIndex("number"));
+                student.score = cursor.getInt(cursor.getColumnIndex("score"));
+                Log.d(TAG,"student = " + student.toString());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if(cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+    private void queryFromSqlite() {
+        Cursor cursor = StudentContentProvider.getConnectionDB().query(DATABASE_STUDENT_TABLE_NAME,new String[]{"id", "name","gender","number","score"},null,null,null,null,null);
+        if(cursor != null) {
+            cursor.close();
         }
     }
 
