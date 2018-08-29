@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.android.peter.threadpooldemo.MainActivity">
+
+    <Button
+        android:id="@+id/btn_fixed_thread_pool"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FixedThreadPool"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_cached_thread_pool"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btn_fixed_thread_pool"
+        android:text="CachedThreadPool"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_scheduled_thread_pool"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btn_cached_thread_pool"
+        android:text="ScheduledThreadPool"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_single_thread_executor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btn_scheduled_thread_pool"
+        android:text="SingleThreadExecutor"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_custom_thread_pool"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btn_single_thread_executor"
+        android:text="CustomThreadPool"
+        android:textAllCaps="false"/>
+
+</android.support.constraint.ConstraintLayout>

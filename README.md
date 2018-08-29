@@ -13,5 +13,8 @@ FileDemo 添加与文件操作有关的demo
 NotificationDemo 添加包含各种通知写法的demo
 MessengerDemo 添加MessengerDemo示例
 AIDLClientDemo AIDLServiceDemo 添加AIDL demo示例，IPC通讯
+GenericsDemo 添加泛型示例GenericsDemo
+ReflectDemo 添加反射示例ReflectDemo
+ThreadPoolDemo 添加线程池使用示例ThreadPoolDemo
 
 其他demo陆续更新中。。。
