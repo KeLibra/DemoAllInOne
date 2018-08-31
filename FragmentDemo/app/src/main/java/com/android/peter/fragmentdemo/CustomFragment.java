@@ -20,6 +20,23 @@ public class CustomFragment extends Fragment {
     public void onAttach(Context context) {
         Log.e(TAG,"onAttach");
         super.onAttach(context);
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            String msg = bundle.getString("msg");
+            Log.d(TAG,"onAttach msg = " + msg);
+        }
+
+        Log.d(TAG,"onAttach tag = " + getTag());
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
     }
 
     @Override

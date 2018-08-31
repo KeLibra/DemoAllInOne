@@ -12,13 +12,11 @@ public class MainActivity extends AppCompatActivity {
         Log.e(TAG,"onCreate");
         Log.i(TAG,"onCreate begin");
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager().beginTransaction()
-                .add(new CustomFragment(),"CustomFragment")
-                .commit();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if(getSupportFragmentManager().findFragmentByTag("CustomFragment") == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(new CustomFragment(),"CustomFragment")
+                    .commit();
         }
         Log.i(TAG,"onCreate end");
     }
@@ -40,6 +38,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        Log.e(TAG,"onRestoreInstanceState");
+        Log.i(TAG,"onRestoreInstanceState begin");
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null) {
+            String msg = savedInstanceState.getString("msg");
+            Log.d(TAG,"onRestoreInstanceState msg = " + msg);
+           CustomFragment customFragment = (CustomFragment) getSupportFragmentManager().findFragmentByTag("CustomFragment");
+           if(customFragment != null) {
+               customFragment.setArguments(savedInstanceState);
+           }
+        }
+        Log.i(TAG,"onRestoreInstanceState end");
+    }
+
+    @Override
     protected void onResume() {
         Log.e(TAG,"onResume");
         Log.i(TAG,"onResume begin");
@@ -53,6 +67,15 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG,"onPause begin");
         super.onPause();
         Log.i(TAG,"onPause end");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.e(TAG,"onSaveInstanceState");
+        Log.i(TAG,"onSaveInstanceState begin");
+        super.onSaveInstanceState(outState);
+        outState.putString("msg","data");
+        Log.i(TAG,"onSaveInstanceState end");
     }
 
     @Override
