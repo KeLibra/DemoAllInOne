@@ -17,5 +17,7 @@ GenericsDemo 添加泛型示例GenericsDemo
 ReflectDemo 添加反射示例ReflectDemo
 ThreadPoolDemo 添加线程池使用示例ThreadPoolDemo
 FragmentDemo  添加Fragment与Activity生命周期示例FragmentDemo
+ThreadDemo 添加ThreaDemo thread生命周期与线程等待唤醒机制
+AnimationDemo 添加AnimationDemo 自定义view
 
 其他demo陆续更新中。。。
