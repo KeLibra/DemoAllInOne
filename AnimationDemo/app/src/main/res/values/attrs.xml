@@ -5,7 +5,6 @@
         <attr name="background_color" format="color"/>
         <attr name="text_color" format="color"/>
         <attr name="stroke_width" format="dimension"/>
-        <attr name="circle_radius" format="dimension"/>
     </declare-styleable>
 
 </resources>
