@@ -1,7 +1,5 @@
 package com.android.peter.animationdemo;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,6 +10,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
+    private CircleProgress mCircleProgress;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -41,11 +40,10 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
+        mCircleProgress = findViewById(R.id.cp_progress);
+        mCircleProgress.setPercentage(40);
+        mCircleProgress.setTitleText("运动消耗");
+        mCircleProgress.setValueText("60");
     }
 }
