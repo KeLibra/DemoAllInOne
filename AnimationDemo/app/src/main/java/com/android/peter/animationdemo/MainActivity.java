@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +45,13 @@ public class MainActivity extends AppCompatActivity {
         mCircleProgress = findViewById(R.id.cp_progress);
         mCircleProgress.setPercentage(40);
         mCircleProgress.setTitleText("运动消耗");
-        mCircleProgress.setValueText("60");
+        mCircleProgress.setValue(60);
+        mCircleProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCircleProgress.startCircleProgressAnim();
+                mCircleProgress.startValueAnim();
+            }
+        });
     }
 }

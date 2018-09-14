@@ -1,5 +1,6 @@
 package com.android.peter.animationdemo;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -10,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 /**
  * Created by peter on 2018/9/12.
@@ -25,7 +27,8 @@ public class CircleProgress extends View {
     private int mTitleTextColor;
 
     private String mTitleText = "----";
-    private String mValueText = "0";
+    private int mValue = 0;
+    private String mTempValueText = "0";
     private String mUnitText = "Kcal";
 
     private Paint mTestPaint = new Paint();
@@ -37,7 +40,8 @@ public class CircleProgress extends View {
     private Paint mValueTextPaint = new Paint();
     private Paint mUnitTextPaint = new Paint();
 
-    private int mPercentage = 0;
+    private int mPercent = 0;
+    private int mTempPercent = 0;
     private int mViewWidth;
     private int mViewHeight;
     private int mCenterX;
@@ -47,6 +51,8 @@ public class CircleProgress extends View {
     private int mPaddingEnd = 0;
     private int mPaddingTop = 0;
     private int mPaddingBottom = 0;
+
+    private boolean mIsFirstTime = true;
 
     private RectF mFrameRectF = new RectF();
     private Rect mTextRect = new Rect();
@@ -172,49 +178,103 @@ public class CircleProgress extends View {
     protected void onDraw(Canvas canvas) {
         Log.i(TAG,"onDraw");
         super.onDraw(canvas);
-        // background
-        canvas.drawCircle(mCenterX,mCenterY,mCircleRadius - mStrokeWidth/2, mBackgroundPaint);
-
-        // foreground
-        canvas.drawArc(mFrameRectF.left + mStrokeWidth/2,mFrameRectF.top + mStrokeWidth/2,mFrameRectF.right - mStrokeWidth/2,
-                mFrameRectF.bottom - mStrokeWidth/2,270,(float) (3.6* mPercentage),false,mForegroundPaint);
-
-        // end circle
-        if(mPercentage != 0 && mPercentage != 100) {
-            // end out circle
-            canvas.drawCircle((float) (mCenterX + (mCircleRadius-mStrokeWidth/2)*Math.cos((3.6* mPercentage -90)*Math.PI/180)),
-                    (float)(mCenterY + (mCircleRadius-mStrokeWidth/2)*Math.sin((3.6* mPercentage -90)*Math.PI/180)), mStrokeWidth*3/4, mEndOutCirclePaint);
-
-            // end inner circle
-            canvas.drawCircle((float) (mCenterX + (mCircleRadius-mStrokeWidth/2)*Math.cos((3.6* mPercentage -90)*Math.PI/180)),
-                    (float)(mCenterY + (mCircleRadius-mStrokeWidth/2)*Math.sin((3.6* mPercentage -90)*Math.PI/180)), mStrokeWidth/4, mEndInnerCirclePaint);
+        if(mIsFirstTime) {
+            startCircleProgressAnim();
+            startValueAnim();
+            mIsFirstTime = false;
         }
 
-        // text
+        // background circle
+        drawBackgroundCircle(canvas);
+
+        // foreground circle
+        drawForegroundCircle(canvas);
+
+        // content
+        drawContent(canvas);
+
+        // coordinate
+//        drawCoordinate(canvas);
+    }
+
+    public void startCircleProgressAnim() {
+        ValueAnimator anim = ValueAnimator.ofInt(0, mPercent);
+        anim.setDuration(500);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mTempPercent = (int) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
+        anim.start();
+    }
+
+    public void startValueAnim() {
+        ValueAnimator anim = ValueAnimator.ofInt(0, mValue);
+        anim.setDuration(500);
+        anim.setInterpolator(new LinearInterpolator());
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mTempValueText = Integer.toString((Integer) animation.getAnimatedValue());
+                invalidate();
+            }
+        });
+        anim.start();
+    }
+
+    private void drawBackgroundCircle(Canvas canvas) {
+        canvas.drawCircle(mCenterX,mCenterY,mCircleRadius - mStrokeWidth/2, mBackgroundPaint);
+    }
+
+    private void drawForegroundCircle(Canvas canvas) {
+        // circle
+        canvas.drawArc(mFrameRectF.left + mStrokeWidth/2,mFrameRectF.top + mStrokeWidth/2,mFrameRectF.right - mStrokeWidth/2,
+                mFrameRectF.bottom - mStrokeWidth/2,270,(float) (3.6* mTempPercent),false,mForegroundPaint);
+
+        // end circle
+        if(mTempPercent != 0 && mTempPercent != 100) {
+            // end out circle
+            canvas.drawCircle((float) (mCenterX + (mCircleRadius-mStrokeWidth/2)*Math.cos((3.6* mTempPercent -90)*Math.PI/180)),
+                    (float)(mCenterY + (mCircleRadius-mStrokeWidth/2)*Math.sin((3.6* mTempPercent -90)*Math.PI/180)), mStrokeWidth*3/4, mEndOutCirclePaint);
+
+            // end inner circle
+            canvas.drawCircle((float) (mCenterX + (mCircleRadius-mStrokeWidth/2)*Math.cos((3.6* mTempPercent -90)*Math.PI/180)),
+                    (float)(mCenterY + (mCircleRadius-mStrokeWidth/2)*Math.sin((3.6* mTempPercent -90)*Math.PI/180)), mStrokeWidth/4, mEndInnerCirclePaint);
+        }
+    }
+
+    private void drawContent(Canvas canvas) {
+        // title
         mTitleTextPaint.getTextBounds(mTitleText,0,mTitleText.length(), mTextRect);
         canvas.drawText(mTitleText,mCenterX,mCenterY/2 + mTextRect.height()/2,mTitleTextPaint);
 
-        mValueTextPaint.getTextBounds(mValueText,0,mValueText.length(),mTextRect);
-        canvas.drawText(mValueText,mCenterX,mCenterY + mTextRect.height()/2,mValueTextPaint);
+        // value
+        mValueTextPaint.getTextBounds(mTempValueText,0, mTempValueText.length(),mTextRect);
+        canvas.drawText(mTempValueText,mCenterX,mCenterY + mTextRect.height()/2,mValueTextPaint);
 
+        // unit
         mUnitTextPaint.getTextBounds(mUnitText,0,mUnitText.length(),mTextRect);
         canvas.drawText(mUnitText,mCenterX,mCenterY*4/3,mUnitTextPaint);
+    }
 
-        // coordinate
-        /*canvas.drawLine(0,mCenterY,2*mCenterX,mCenterY,mTestPaint);
-        canvas.drawLine(mCenterX,0,mCenterX,2*mCenterY,mTestPaint);*/
+    private void drawCoordinate(Canvas canvas) {
+        canvas.drawLine(0,mCenterY,2*mCenterX,mCenterY,mTestPaint);
+        canvas.drawLine(mCenterX,0,mCenterX,2*mCenterY,mTestPaint);
     }
 
     public int getPercentage() {
-        return mPercentage;
+        return mPercent;
     }
 
-    public void setPercentage(int progress) {
-        if(progress < 0 || progress > 100) {
+    public void setPercentage(int percent) {
+        if(percent < 0 || percent > 100) {
             throw new IllegalArgumentException("The value should be in 1 ~ 100");
         }
 
-        mPercentage = progress;
+        mPercent = percent;
         invalidate();
     }
 
@@ -227,12 +287,15 @@ public class CircleProgress extends View {
         invalidate();
     }
 
-    public String getValueText() {
-        return mValueText;
+    public int getValue() {
+        return mValue;
     }
 
-    public void setValueText(String valueText) {
-        mValueText = valueText;
+    public void setValue(int value) {
+        if(value < 0) {
+            throw new IllegalArgumentException("The value should be greater than 0!");
+        }
+        mValue = value;
         invalidate();
     }
 }
