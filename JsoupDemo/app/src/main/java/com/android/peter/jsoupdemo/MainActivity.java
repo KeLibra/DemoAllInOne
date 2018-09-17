@@ -10,7 +10,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,14 +74,14 @@ public class MainActivity extends AppCompatActivity {
         JianShuModel jianShuModel;
         for (Element element: elements) {
             jianShuModel = new JianShuModel();
-            jianShuModel.setAuthor(element.select("a.nickname").first().text());
+            jianShuModel.setNickname(element.select("a.nickname").first().text());
             jianShuModel.setTitle(element.select("a.title").first().text());
             jianShuModel.setContent(element.select("p.abstract").first().text());
             jianShuModel.setImage(element.select("a.wrap-img").first() != null ?
                     element.select("a.wrap-img").first().children().first().attr("src"): null);
             jianShuModel.setUrl(element.select("a.title").first().attr("href"));
-            jianShuModel.setCommentsNum(element.select("i.iconfont ic-list-comments").);
-            jianShuModel.setLikeNum(element.select("i.iconfont ic-list-like").text());
+            jianShuModel.setCommentsNum(element.select("a.nickname").next().text());
+            jianShuModel.setLikeNum(element.select("a.nickname").next().next().text());
             Log.d(TAG,"model = " + jianShuModel.toString());
         }
     }

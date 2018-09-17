@@ -29,7 +29,7 @@ import android.os.Parcelable;
 */
 
 public class JianShuModel implements Parcelable{
-    private String author;
+    private String nickname;
     private String title;
     private String content;
     private String image;
@@ -45,7 +45,7 @@ public class JianShuModel implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.author);
+        dest.writeString(this.nickname);
         dest.writeString(this.title);
         dest.writeString(this.content);
         dest.writeString(this.image);
@@ -58,7 +58,7 @@ public class JianShuModel implements Parcelable{
     }
 
     protected JianShuModel(Parcel in) {
-        this.author = in.readString();
+        this.nickname = in.readString();
         this.title = in.readString();
         this.content = in.readString();
         this.image = in.readString();
@@ -79,8 +79,8 @@ public class JianShuModel implements Parcelable{
         }
     };
 
-    public JianShuModel(String author, String title, String content, String image, String url, String commentsNum, String likeNum) {
-        this.author = author;
+    public JianShuModel(String nickname, String title, String content, String image, String url, String commentsNum, String likeNum) {
+        this.nickname = nickname;
         this.title = title;
         this.content = content;
         this.image = image;
@@ -92,7 +92,7 @@ public class JianShuModel implements Parcelable{
     @Override
     public String toString() {
         return "JianShuModel{" +
-                "author='" + author + '\'' +
+                "nickname='" + nickname + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", image='" + image + '\'' +
@@ -102,12 +102,12 @@ public class JianShuModel implements Parcelable{
                 '}';
     }
 
-    public String getAuthor() {
-        return author;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getTitle() {
