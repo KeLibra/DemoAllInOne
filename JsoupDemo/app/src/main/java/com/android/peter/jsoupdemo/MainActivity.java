@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,7 +30,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "peter.log." + MainActivity.class.getSimpleName();
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             switch (msg.what) {
                 case MSG_UPDATE_DATA:
                     mRefreshLayout.setRefreshing(false);
-                    mAdapter.addData(mDataList);
+                    mAdapter.setData(mDataList);
                     break;
                 default:
                     //do nothing
@@ -87,21 +88,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext,JianShuDetailActivity.class);
                 intent.putExtra("url",mDataList.get(position).getUrl());
 
-//                ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(v,0,0,100,100);
                 startActivity(intent);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
         mLayoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
-            @Override
-            public boolean onFling(int velocityX, int velocityY) {
-                Log.d(TAG,"onFling");
-                mAdapter.updateScrollState(true);
-                return false;
-            }
-        });
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -110,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
                 switch (newState) {
                     case SCROLL_STATE_IDLE:
                         mAdapter.updateScrollState(false);
+                        break;
+                    case SCROLL_STATE_DRAGGING:
+                    case SCROLL_STATE_SETTLING:
+                        mAdapter.updateScrollState(true);
                         break;
                     default:
                         // do nothing
@@ -124,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG,"onStart thread = " + Thread.currentThread());
     }
 
     @Override
@@ -163,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 Log.d(TAG,"onResponse");
                 if (response.isSuccessful()) {
-                    final String result = response.body().string();
                     try {
+                        final String result = response.body().string();
                         mThreadPool.execute(new WorkTask(result));
                     } catch (Exception ex) {
                         Log.d(TAG,"Parse html fail");
@@ -179,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void parseHtml(String html) {
-        Log.d(TAG,"parseHtml thread = " + Thread.currentThread());
         //将html转为Document对象
         Document document = Jsoup.parse(html);
         //获得li的元素集合

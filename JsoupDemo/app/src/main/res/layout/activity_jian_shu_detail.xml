@@ -13,7 +13,8 @@
     <ProgressBar
         android:id="@+id/cl_progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="4dp"
+        android:progressTint="@color/colorPrimaryDark"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         />
 </android.support.constraint.ConstraintLayout>

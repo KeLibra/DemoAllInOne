@@ -2,6 +2,7 @@ package com.android.peter.jsoupdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,11 +38,6 @@ public class JianShuDetailActivity extends AppCompatActivity {
         Log.d(TAG,"url = " + mUrl);
         mWebView = findViewById(R.id.wv_detail);
         mProgressBar = findViewById(R.id.cl_progress_bar);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         // allow load image in web view
         mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         mWebView.getSettings().setJavaScriptEnabled(true);
@@ -52,13 +48,23 @@ public class JianShuDetailActivity extends AppCompatActivity {
                 super.onProgressChanged(view, newProgress);
                 if(newProgress == 100) {
                     mProgressBar.setProgress(100);
-                    mProgressBar.setVisibility(View.GONE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProgressBar.setVisibility(View.GONE);
+                        }
+                    },300);
                 } else {
                     mProgressBar.setProgress(newProgress);
                 }
             }
         });
         mWebView.loadUrl(JIAN_SHU_BASE_URL + mUrl);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override

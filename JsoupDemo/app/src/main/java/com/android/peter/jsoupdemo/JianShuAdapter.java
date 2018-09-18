@@ -27,7 +27,7 @@ public class JianShuAdapter extends RecyclerView.Adapter {
     private final static int TYPE_WITHOUT_IMAGE = 1;
 
     private Context mContext;
-    private List<JianShuModel> mDataList = new ArrayList<>();
+    private List<JianShuModel> mDataList;
     private View.OnClickListener mOnClickListener;
     private boolean mIsScrolling;
     private RequestOptions mOptions
@@ -35,10 +35,10 @@ public class JianShuAdapter extends RecyclerView.Adapter {
             .error(R.mipmap.ic_error)
             .placeholder(R.mipmap.ic_place_holder);
 
-    public JianShuAdapter(Context mContext, List<JianShuModel> mDataList, View.OnClickListener mOnClickListener) {
-        this.mContext = mContext;
-        this.mDataList = mDataList;
-        this.mOnClickListener = mOnClickListener;
+    public JianShuAdapter(Context context, List<JianShuModel> dataList, View.OnClickListener onClickListener) {
+        this.mContext = context;
+        this.mDataList = dataList;
+        this.mOnClickListener = onClickListener;
     }
 
     @Override
@@ -81,6 +81,8 @@ public class JianShuAdapter extends RecyclerView.Adapter {
                             .apply(mOptions)
                             .transition(DrawableTransitionOptions.withCrossFade())
                             .into(contentViewHolderWithImage.mImage);
+                } else {
+                    contentViewHolderWithImage.mImage.setImageDrawable(mContext.getDrawable(R.mipmap.ic_place_holder));
                 }
                 contentViewHolderWithImage.itemView.setOnClickListener(mOnClickListener);
             }
@@ -103,8 +105,9 @@ public class JianShuAdapter extends RecyclerView.Adapter {
         return mDataList.size();
     }
 
-    public void addData(List<JianShuModel> dataList) {
-        mDataList.addAll(dataList);
+    public void setData(List<JianShuModel> dataList) {
+        Log.d(TAG,"setData data size = " + dataList.size());
+        mDataList = dataList;
         notifyDataSetChanged();
     }
 
