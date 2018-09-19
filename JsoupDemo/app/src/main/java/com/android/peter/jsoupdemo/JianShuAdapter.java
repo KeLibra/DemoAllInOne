@@ -2,18 +2,14 @@ package com.android.peter.jsoupdemo;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,7 +48,6 @@ public class JianShuAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG,"onCreateViewHolder");
         View view;
         if(viewType == TYPE_WITH_IMAGE) {
             view = LayoutInflater.from(mContext).inflate(R.layout.jian_shu_item_with_iamge,parent,false);
@@ -65,7 +60,6 @@ public class JianShuAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Log.d(TAG,"onBindViewHolder position = " + position);
         if(holder instanceof ContentViewHolderWithImage) {
             if(mDataList != null && mDataList.size() > 0) {
                 ContentViewHolderWithImage contentViewHolderWithImage = (ContentViewHolderWithImage) holder;
@@ -106,7 +100,6 @@ public class JianShuAdapter extends RecyclerView.Adapter {
     }
 
     public void setData(List<JianShuModel> dataList) {
-        Log.d(TAG,"setData data size = " + dataList.size());
         mDataList = dataList;
         notifyDataSetChanged();
     }
@@ -118,7 +111,7 @@ public class JianShuAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public class ContentViewHolderWithImage extends RecyclerView.ViewHolder {
+    public static class ContentViewHolderWithImage extends RecyclerView.ViewHolder {
         private TextView mNickName;
         private TextView mTitle;
         private TextView mContent;
@@ -137,7 +130,7 @@ public class JianShuAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public class ContentViewHolderWithoutImage extends RecyclerView.ViewHolder {
+    public static class ContentViewHolderWithoutImage extends RecyclerView.ViewHolder {
         private TextView mNickName;
         private TextView mTitle;
         private TextView mContent;
