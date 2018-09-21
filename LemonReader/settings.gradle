@@ -1,0 +1,1 @@
+include ':app', ':library_common', ':module_news', ':module_video', ':module_picture', ':module_user', ':module_main'
