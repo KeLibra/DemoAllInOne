@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.android.peter.lemonreader.R;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
@@ -16,16 +18,16 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
+            int id = item.getItemId();
+            if (id == R.id.navigation_home) {
+                mTextMessage.setText(R.string.title_home);
+                return true;
+            } else if (id == R.id.navigation_dashboard) {
+                mTextMessage.setText(R.string.title_dashboard);
+                return true;
+            } else if (id == R.id.navigation_notifications) {
+                mTextMessage.setText(R.string.title_notifications);
+                return true;
             }
             return false;
         }

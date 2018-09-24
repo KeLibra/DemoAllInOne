@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.smile.ch.article">
+    package="com.android.peter.lemonreader">
 
     <application android:theme="@style/AppBaseTheme">
         <!--<activity android:name=".ArticleListActivity"
