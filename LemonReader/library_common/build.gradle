@@ -31,8 +31,12 @@ dependencies {
     api rootProject.ext.dependencies.rxjava
     api rootProject.ext.dependencies.glide
     api rootProject.ext.dependencies.constraint_layout
+    api rootProject.ext.dependencies.eventbus
     api rootProject.ext.dependencies.okhttp3_logging
     api rootProject.ext.dependencies.SmartRefreshLayout
     api rootProject.ext.dependencies.banner
     api rootProject.ext.dependencies.arouter_api
+    api rootProject.ext.dependencies.junit
+    api rootProject.ext.dependencies.runner
+    api rootProject.ext.dependencies.espresso
 }

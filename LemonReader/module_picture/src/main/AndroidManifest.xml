@@ -3,8 +3,12 @@
     package="com.android.peter.lemonreader">
 
     <application android:theme="@style/AppBaseTheme">
-        <!--<activity android:name=".ArticleListActivity"
-            android:screenOrientation="portrait"/>-->
+
+        <!--
+            <activity android:name=".ArticleListActivity"
+            android:screenOrientation="portrait"/>
+        -->
+        <activity android:name="com.android.peter.picture.PictureMainActivity"></activity>
     </application>
 
 </manifest>

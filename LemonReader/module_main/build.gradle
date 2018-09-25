@@ -28,7 +28,7 @@ android {
             } else {
                 //集成开发模式下则需要排除debug文件夹中的所有Java文件
                 java {
-                    exclude 'debug/**'
+                    exclude 'com.android.peter.news.debug/**'
                 }
             }
         }
