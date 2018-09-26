@@ -34,6 +34,4 @@ dependencies {
         implementation project(':module_video')
         implementation project(':module_user')
     }
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }
