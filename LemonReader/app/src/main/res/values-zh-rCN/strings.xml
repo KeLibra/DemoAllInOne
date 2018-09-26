@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">萌阅</string>
+    <string name="title_news">新闻</string>
+    <string name="title_picture">图片</string>
+    <string name="title_video">视频</string>
+    <string name="title_user">用户</string>
+</resources>

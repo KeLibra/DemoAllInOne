@@ -8,7 +8,7 @@
             <activity android:name=".ArticleListActivity"
             android:screenOrientation="portrait"/>
         -->
-        <activity android:name="com.android.peter.video.VideoMainActivity"></activity>
+        <activity android:name="com.android.peter.video.debug.VideoMainActivity"></activity>
     </application>
 
 </manifest>

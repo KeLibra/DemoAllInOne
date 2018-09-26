@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.peter.lemonreader">
+    package="com.android.peter.picture">
 
     <application android:theme="@style/AppBaseTheme">
 
@@ -8,7 +8,7 @@
             <activity android:name=".ArticleListActivity"
             android:screenOrientation="portrait"/>
         -->
-        <activity android:name="com.android.peter.picture.PictureMainActivity"></activity>
+        <activity android:name="com.android.peter.picture.debug.PictureMainActivity"></activity>
     </application>
 
 </manifest>

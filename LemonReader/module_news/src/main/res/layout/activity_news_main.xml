@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.peter.news.NewsMainActivity">
-
-    <TextView
+    tools:context="com.android.peter.news.debug.NewsMainActivity">
+    <FrameLayout
+        android:id="@+id/fl_news_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/app_name"/>
+        android:layout_height="match_parent">
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_news"
+        android:icon="@mipmap/ic_news"
+        android:title="@string/title_news" />
+
+    <item
+        android:id="@+id/navigation_picture"
+        android:icon="@mipmap/ic_picture"
+        android:title="@string/title_picture" />
+
+    <item
+        android:id="@+id/navigation_video"
+        android:icon="@mipmap/ic_video"
+        android:title="@string/title_video" />
+
+    <item
+        android:id="@+id/navigation_user"
+        android:icon="@mipmap/ic_user"
+        android:title="@string/title_user" />
+
+</menu>

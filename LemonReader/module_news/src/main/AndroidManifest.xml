@@ -4,7 +4,7 @@
 
     <application
         android:theme="@style/AppBaseTheme">
-        <activity android:name="com.android.peter.news.NewsMainActivity"
+        <activity android:name="com.android.peter.news.debug.NewsMainActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask">
         </activity>

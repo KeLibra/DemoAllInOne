@@ -5,8 +5,7 @@
 
     <TextView
         android:gravity="center"
-        android:text="News fragment"
+        android:text="Picture fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 </android.support.constraint.ConstraintLayout>

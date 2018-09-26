@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">LemonReader</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_news">News</string>
+    <string name="title_picture">Picture</string>
+    <string name="title_video">Video</string>
+    <string name="title_user">User</string>
 </resources>

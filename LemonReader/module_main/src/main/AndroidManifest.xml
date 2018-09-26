@@ -2,16 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.peter.main">
 
-    <application android:theme="@style/AppBaseTheme">
-        <activity
-            android:name="com.android.peter.main.MainActivity"
-            android:label="@string/title_activity_main"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-    </application>
-
+    <application android:theme="@style/AppBaseTheme"></application>
 </manifest>

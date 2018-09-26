@@ -8,7 +8,7 @@
             <activity android:name=".ArticleListActivity"
             android:screenOrientation="portrait"/>
         -->
-        <activity android:name="com.android.peter.user.UserMainActivity"></activity>
+        <activity android:name="com.android.peter.user.debug.UserMainActivity"></activity>
     </application>
 
 </manifest>

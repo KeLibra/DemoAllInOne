@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.peter.lemonreader">
+    package="com.android.peter.picture">
 
     <application
         android:name="com.android.peter.picture.debug.PictureApplication"
