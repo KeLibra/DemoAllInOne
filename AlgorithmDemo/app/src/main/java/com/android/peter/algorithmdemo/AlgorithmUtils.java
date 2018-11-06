@@ -82,4 +82,23 @@ public class AlgorithmUtils {
 
         return high;
     }
+
+    public static void toutiaoSort(int[] array) {
+//        int[] array = {10, -2, 5, 8, -4, 2, -3, 7, 12, -88, -23, 35};
+
+        int k=0;
+        int temp;
+        for (int i=0 ; i<array.length ; i++) {
+            if(array[i] < 0) {
+                if(i!=0) {
+                    temp = array[i];
+                    array[i] = array[k];
+                    array[k] = temp;
+                }
+                k++;
+            }
+        }
+
+        Log.d(TAG,"toutiaoSort array = " + printResult(array));
+    }
 }
