@@ -2,6 +2,9 @@ package com.android.peter.algorithmdemo;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by peter on 2018/11/5.
  */
@@ -42,6 +45,32 @@ public class AlgorithmUtils {
         }
     }
 
+    // 固定的切分方式
+    public static int partition(int[] array, int low, int high) {
+        int key = array[low];
+
+        while (low< high) {
+            // 从后半部分向前扫描
+            while (low< high && key<=array[high]) {
+                high--;
+            }
+
+            array[low] = array[high];
+
+            // 从前半部分向后扫描
+            while (low< high && key>=array[low]) {
+                low++;
+            }
+
+            array[high] = array[low];
+        }
+
+        array[high] = key;
+
+        return high;
+    }
+
+
     public static void fastSort(int[] array, int low, int high) {
         if(low>= high) {
             return;
@@ -62,27 +91,6 @@ public class AlgorithmUtils {
         return sb.toString();
     }
 
-    public static int partition(int[] array, int low, int high) {
-        int key = array[low];
-        while (low< high) {
-            while (low< high && key<=array[high]) {
-                high--;
-            }
-
-            array[low] = array[high];
-
-            while (low< high && key>=array[low]) {
-                low++;
-            }
-
-            array[high] = array[low];
-        }
-
-        array[high] = key;
-
-        return high;
-    }
-
     public static void toutiaoSort(int[] array) {
 //        int[] array = {10, -2, 5, 8, -4, 2, -3, 7, 12, -88, -23, 35};
 
@@ -100,5 +108,42 @@ public class AlgorithmUtils {
         }
 
         Log.d(TAG,"toutiaoSort array = " + printResult(array));
+    }
+
+    public static String huiwen(String string) {
+
+        if(string == null) {
+            return null;
+        }
+        if(string.length() < 2) {
+            return string;
+        }
+
+        String result = "";
+        String temp = "";
+
+        for(int i = 0; i< string.length()-1; i++) {
+            if(string.charAt(i) == (string.charAt(i+1))) {
+                if(i == 0) {
+                    result = string.substring(0,1);
+                } else if(i+1 == string.length()) {
+                    result = string.substring(string.length()-2, string.length()-1);
+                } else {
+                    for(int j = 1; j<i && i< string.length()-1-j; j++) {
+                        if(!(string.charAt(i-j) == string.charAt(i+1+j))) {
+                            temp = string.substring(i+1-j,i+1+j);
+                            break;
+                        }
+                    }
+
+                    if(result.length() < temp.length()) {
+                        result = temp;
+                    }
+                }
+            }
+        }
+
+        Log.d(TAG,"huiwen result = " + result);
+        return result;
     }
 }

@@ -23,5 +23,7 @@ public class MainActivity extends AppCompatActivity {
         AlgorithmUtils.fastSort(array,0,array.length-1);
         array = new int[]{10, -2, 5, 8, -4, 2, -3, 7, 12, -88, -23, 35};
         AlgorithmUtils.toutiaoSort(array);
+        String huiwen = "3214156654123321789";
+        AlgorithmUtils.huiwen(huiwen);
     }
 }
